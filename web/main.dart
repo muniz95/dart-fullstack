@@ -1,6 +1,5 @@
 import 'package:angular/angular.dart';
-
-import 'package:workspace/app_component.dart';
+import 'package:dart_fullstack/app_component.dart';
 
 void main() {
   bootstrap(AppComponent);
