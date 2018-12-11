@@ -1,3 +1,6 @@
+import 'package:dart_fullstack_backend/controllers/task_controller.dart';
+import 'package:dart_fullstack_backend/services/task_service.dart';
+
 import 'dart_fullstack_backend.dart';
 
 /// This type initializes an application.
@@ -5,6 +8,7 @@ import 'dart_fullstack_backend.dart';
 /// Override methods in this class to set up routes and initialize services like
 /// database connections. See http://aqueduct.io/docs/http/channel/.
 class DartFullstackBackendChannel extends ApplicationChannel {
+  TaskService _taskService;
   /// Initialize services in this method.
   ///
   /// Implement this method to initialize services, read values from [options]
@@ -13,6 +17,7 @@ class DartFullstackBackendChannel extends ApplicationChannel {
   /// This method is invoked prior to [entryPoint] being accessed.
   @override
   Future prepare() async {
+    _taskService = TaskService();
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
   }
 
@@ -33,6 +38,10 @@ class DartFullstackBackendChannel extends ApplicationChannel {
       .linkFunction((request) async {
         return Response.ok({"key": "value"});
       });
+
+    router
+      .route('/task')
+      .link(() => TaskController(_taskService));
 
     return router;
   }
